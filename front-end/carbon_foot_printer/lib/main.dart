@@ -5,9 +5,8 @@ import 'news_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
 
-
 void main() {
-  runApp( MyApp() );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,8 +20,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
 
 class MainHomeScreen extends StatefulWidget {
   @override
@@ -45,7 +42,22 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     });
   }
 
-  // Navigation Bar
+  Widget _buildIcon(IconData iconData, int index) {
+    bool isSelected = _selectedIndex == index;
+
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isSelected ? const Color.fromARGB(255, 6, 134, 87) : Colors.transparent, // white bg if selected
+      ),
+      padding: const EdgeInsets.all(6), // spacing so icon doesn’t touch edges
+      child: Icon(
+        iconData,
+        color: const Color.fromARGB(255, 255, 255, 255)
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,28 +66,27 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       ),
       body: widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        
         backgroundColor: const Color.fromARGB(255, 10, 79, 54),
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        selectedItemColor: Colors.white, // still needed for label color
         unselectedItemColor: const Color.fromARGB(255, 207, 207, 207),
-        items: const <BottomNavigationBarItem>[
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: _buildIcon(Icons.home, 0),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.leaderboard),
-            label: 'Leaderboard'
+            icon: _buildIcon(Icons.leaderboard, 1),
+            label: 'Leaderboard',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
+            icon: _buildIcon(Icons.newspaper, 2),
             label: 'News',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: _buildIcon(Icons.person, 3),
             label: 'Profile',
           ),
         ],
