@@ -4,9 +4,10 @@ import 'leader_screen.dart';
 import 'news_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
+import 'login.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainHomeScreen(),
+      home: LoginScreen(),
     );
   }
 }
