@@ -15,6 +15,7 @@ style: TextStyle(
       ),
 backgroundColor: const Color.fromARGB(255, 10, 79, 54),
 ),
+    ),
     );
   }
 }
