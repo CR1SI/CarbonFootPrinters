@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'leader_screen.dart';
 import 'news_screen.dart';
-import 'profile_screen.dart';
+import 'publicprofile_screen.dart';
 import 'settings_screen.dart';
+import 'login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,12 +23,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainHomeScreen(),
+      home: LoginScreen(),
     );
   }
 }
 
 class MainHomeScreen extends StatefulWidget {
+  const MainHomeScreen({super.key});
+
   @override
   _MainHomeScreenState createState() => _MainHomeScreenState();
 }
@@ -33,7 +42,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     HomeScreen(),
     LeaderboardScreen(),
     NewsScreen(),
-    ProfileScreen(),
+  PublicProfileScreen(
+    username: "GuestUser",
+    pfpIndex: 0,
+  ),
   ];
 
   void _onItemTapped(int index) {
@@ -61,9 +73,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Carbon Foot Printer'),
-      ),
       body: widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 10, 79, 54),

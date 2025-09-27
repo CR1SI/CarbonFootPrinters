@@ -80,43 +80,43 @@ async def delete_user_info(user_id: str):
 
 
 #local test
-testUser = User(
-    name="Kyle",
-    email="kyle@gmail.com",
-    password="12344",
-    pfp=2,
-    country="Brazil",
-    transportation="Eletric",
-)
+# testUser = User(
+#     name="Kyle",
+#     email="kyle@gmail.com",
+#     password="12344",
+#     pfp=2,
+#     country="Brazil",
+#     transportation="Eletric",
+# )
 
 
-# Create user
-print("---- Creating user ----")
-created = user_crud.create_user(testUser.user_id, testUser.dict())
-print("Created:", created)
+# # Create user
+# print("---- Creating user ----")
+# created = user_crud.create_user(testUser.user_id, testUser.dict())
+# print("Created:", created)
 
-# Get user
-print("---- Getting user ----")
-fetched = user_crud.get_user(testUser.user_id)
-print("Fetched:", fetched)
+# # Get user
+# print("---- Getting user ----")
+# fetched = user_crud.get_user(testUser.user_id)
+# print("Fetched:", fetched)
 
-# Update user
-print("---- Updating user ----")
-update_data = {"country": "Argentina", "notiFlag": True}
-updated = user_crud.update_user(testUser.user_id, update_data)
-print("Updated:", updated)
+# # Update user
+# print("---- Updating user ----")
+# update_data = {"country": "Argentina", "notiFlag": True}
+# updated = user_crud.update_user(testUser.user_id, update_data)
+# print("Updated:", updated)
 
-# Get updated user
-print("---- Getting updated user ----")
-fetched_updated = user_crud.get_user(testUser.user_id)
-print("Fetched after update:", fetched_updated)
+# # Get updated user
+# print("---- Getting updated user ----")
+# fetched_updated = user_crud.get_user(testUser.user_id)
+# print("Fetched after update:", fetched_updated)
 
-# Delete user
-print("---- deleting ----")
-delete = user_crud.delete_user(testUser.user_id)
-print("Deleted:", delete)
+# # Delete user
+# print("---- deleting ----")
+# delete = user_crud.delete_user(testUser.user_id)
+# print("Deleted:", delete)
 
-# Try fetching again
-print("---- Getting user after delete ----")
-fetched_after_delete = user_crud.get_user(testUser.user_id)
-print("Fetched after delete:", fetched_after_delete)
+# # Try fetching again
+# print("---- Getting user after delete ----")
+# fetched_after_delete = user_crud.get_user(testUser.user_id)
+# print("Fetched after delete:", fetched_after_delete)
