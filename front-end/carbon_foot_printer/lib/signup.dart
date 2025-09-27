@@ -25,9 +25,9 @@ class User {
     required this.pfp,
     required this.country,
     required this.transportation,
-    this.carbonEmission,
+    this.carbonEmission = 0.0,
     this.uuid,
-    this.notiflag,
+    this.notiflag = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -587,7 +587,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       transportation: _transportation ?? "",
                       carbonEmission: 0.0, // placeholder float value
                       uuid: null, // placeholder can be any type
-                      notiflag: true,
+                      notiflag: false,
                     );
                     // Create the Firebase Auth user
                     final authUser = await _authService.signUp(widget.email, widget.password);
