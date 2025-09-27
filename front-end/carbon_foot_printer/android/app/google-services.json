@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "927230512965",
+    "project_id": "carbonfootfrinters",
+    "storage_bucket": "carbonfootfrinters.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927230512965:android:6707b89b004e677045382c",
+        "android_client_info": {
+          "package_name": "com.example.carbon_foot_printer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927230512965-t01764tgjpnn2d3e33rgbudsu5cpk60m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB33z9Q8fvT4yYTu3R2znP58ZV3MINvQyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927230512965-t01764tgjpnn2d3e33rgbudsu5cpk60m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "927230512965-qqm74fciu5p2tcnhv8lh5o0cadud8o1k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.carbonFootPrinter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
