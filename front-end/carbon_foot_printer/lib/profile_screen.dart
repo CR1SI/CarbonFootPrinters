@@ -9,8 +9,8 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 10, 79, 54),
       body: Center(
         child: Container(
-          width: 300,
-          height: 200,
+          width: 1000,
+          height: 700,
           decoration: BoxDecoration(
             color: Colors.white,   
         ),
