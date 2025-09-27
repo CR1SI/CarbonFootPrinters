@@ -545,7 +545,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       borderSide: const BorderSide(color: Colors.green),
                     ),
                   ),
-                  value: _selectedCountry,
+                  initialValue: _selectedCountry,
                   onChanged: (value) {
                     setState(() {
                       _selectedCountry = value;
@@ -576,7 +576,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       borderSide: const BorderSide(color: Colors.green),
                     ),
                   ),
-                  value: _transportation,
+                  initialValue: _transportation,
                   onChanged: (value) {
                     setState(() {
                       _transportation = value;
