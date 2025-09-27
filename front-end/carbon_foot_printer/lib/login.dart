@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
+import 'signup.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,11 +18,11 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: const Color.fromARGB(255, 10, 79, 54),
       body: Center(
         child: Container(
-          padding: const EdgeInsets.all(25),
+          padding: const EdgeInsets.all(33),
           width: 350,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(33),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -34,11 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Username field
               TextField(
                 decoration: InputDecoration(
-                  labelText: "Username:",
+                  labelText: "Name:",
                   filled: true,
                   fillColor: Colors.grey[300],
                   border: OutlineInputBorder(
@@ -64,8 +64,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 
               const SizedBox(height: 10),
-
-              // Row with checkbox + forgot password
               Row(
                 children: [
                   Checkbox(
@@ -91,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20),
 
-              // Sign In button
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(
@@ -99,9 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   minimumSize: const Size.fromHeight(50),
                 ),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Sign In clicked")),
-                  );
+ Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => MainHomeScreen()),
+    );
                 },
                 child: const Text(
                   "SIGN IN",
@@ -114,16 +112,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 15),
 
-              // Sign up link
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Don’t have an account? "),
                   GestureDetector(
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Go to Sign Up page")),
-                      );
+ Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignupScreen()),
+    );
                     },
                     child: const Text(
                       "Sign up",
