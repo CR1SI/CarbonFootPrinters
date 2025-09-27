@@ -112,9 +112,11 @@ flutter run
 ---
 
 ## Contributors
-- Team Hackathon
-  - Amar Razzaq – Lead developer, Firebase integration, UI/UX
-  - [Other team members]
+- JadeFootprint
+  - Amar Razzaq – Lead developer, Firebase integration, UI/UX, Graphic Design
+  - Chris Padleski - Lead developer, Firebase integration, Auth Dev, CRUD API, Backend Dev, ADK
+  - David Gomez - Lead developer, UI/UX, Graphic Design, Figma
+  - Iadd Chehaeb - ADK Agent Engineer
 
 ---
 
