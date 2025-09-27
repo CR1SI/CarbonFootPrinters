@@ -5,10 +5,16 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Profile',
-        style: TextStyle(fontSize: 24),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 10, 79, 54),
+      body: Center(
+        child: Container(
+          width: 300,
+          height: 200,
+          decoration: BoxDecoration(
+            color: Colors.white,   
+        ),
+        ),
       ),
     );
   }
