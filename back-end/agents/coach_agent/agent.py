@@ -1,13 +1,17 @@
 from google.adk.agents import Agent
+from database import user_crud
 
 root_agent = Agent(
     name="coach_agent",
     model="gemini-2.0-flash",
     description="Co2 emission coach agent",
     instruction="""
-    You are a Co2 coach. 
-    Your job is to send helpful messages based on user data from your tool.
-    make sure your also save 
-    """
+    You are a Co2 coach.
+    You will look at input and based on previous saved co2 emission and time created in the database you will create a timeline.
+    your tools are as follow:
+    - user_crud functions: get_user, create_user, update_user, delete_user
+    based on the timeline you will return a helpful tip or coach like response return a string with under 50 characters.
+    """,
+    tools=[user_crud],
 
 )
