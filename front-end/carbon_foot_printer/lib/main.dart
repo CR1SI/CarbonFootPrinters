@@ -71,10 +71,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     HomeScreen(),
     lb.LeaderboardScreen(),
     NewsScreen(),
-    PublicProfileScreen(
-      username: "GuestUser",
-      pfpIndex: 0,
-    ),
+    PublicProfileScreen(),
+
   ];
 
   void _onItemTapped(int index) {
