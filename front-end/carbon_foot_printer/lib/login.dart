@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'signup.dart';
+import 'firebase_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +12,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _showPassword = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(33),
-          width: 350,
+          width: 380,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(33),
@@ -37,8 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  labelText: "Name:",
+                  labelText: "Email:",
                   filled: true,
                   fillColor: Colors.grey[300],
                   border: OutlineInputBorder(
@@ -51,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Password field
               TextField(
+                controller: _passwordController,
                 obscureText: !_showPassword,
                 decoration: InputDecoration(
                   labelText: "Password:",
@@ -65,27 +72,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 10),
               Row(
-                children: [
-                  Checkbox(
-                    value: _showPassword,
-                    onChanged: (value) {
-                      setState(() {
-                        _showPassword = value ?? false;
-                      });
-                    },
-                    activeColor: const Color.fromARGB(255, 10, 79, 54),
-                  ),
-                  const Text("Show Password"),
-                  const Spacer(),
-                  TextButton(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _showPassword,
+                      onChanged: (value) {
+                        setState(() {
+                          _showPassword = value ?? false;
+                        });
+                      },
+                      activeColor: const Color.fromARGB(255, 10, 79, 54),
+                    ),
+                    const Text("Show Password"),
+                  ],
+                ),
+                Flexible( // <-- this prevents overflow
+                  child: TextButton(
                     onPressed: () {},
                     child: const Text(
                       "Forgot Password?",
                       style: TextStyle(color: Colors.blue),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
               const SizedBox(height: 20),
 
@@ -95,11 +109,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Color.fromARGB(255, 10, 79, 54), width: 2),
                   minimumSize: const Size.fromHeight(50),
                 ),
-                onPressed: () {
- Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => MainHomeScreen()),
-    );
+                onPressed: () async {
+                  final email = _emailController.text.trim();
+                  final password = _passwordController.text;
+                  final user = await _authService.signIn(email, password);
+                  if (user != null) {
+                    if (context.mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainHomeScreen()),
+                      );
+                    }
+                  } else {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Login failed')),
+                      );
+                    }
+                  }
                 },
                 child: const Text(
                   "SIGN IN",
