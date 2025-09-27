@@ -80,9 +80,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("🌍 Carbon Leaderboard"),
+        title: const Text("Carbon Leaderboard",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+        ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 6, 134, 87),
+        backgroundColor: Color.fromARGB(255, 10, 79, 54),
       ),
       body: ListView.builder(
         itemCount: users.length,
