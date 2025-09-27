@@ -3,7 +3,6 @@ import 'home_screen.dart';
 import 'leader_screen.dart';
 import 'news_screen.dart';
 import 'profile_screen.dart';
-import 'settings_screen.dart';
 import 'login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
