@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>927230512965-qqm74fciu5p2tcnhv8lh5o0cadud8o1k.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.927230512965-qqm74fciu5p2tcnhv8lh5o0cadud8o1k</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBl0CL3JbaJthAZ4g2eY8W4ZTBL7MykxEM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>927230512965</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.carbonFootPrinter</string>
+	<key>PROJECT_ID</key>
+	<string>carbonfootfrinters</string>
+	<key>STORAGE_BUCKET</key>
+	<string>carbonfootfrinters.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:927230512965:ios:ea9787c30d39275445382c</string>
+</dict>
+</plist>
