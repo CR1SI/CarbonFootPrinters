@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(33),
-          width: 350,
+          width: 380,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(33),
@@ -65,27 +65,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 10),
               Row(
-                children: [
-                  Checkbox(
-                    value: _showPassword,
-                    onChanged: (value) {
-                      setState(() {
-                        _showPassword = value ?? false;
-                      });
-                    },
-                    activeColor: const Color.fromARGB(255, 10, 79, 54),
-                  ),
-                  const Text("Show Password"),
-                  const Spacer(),
-                  TextButton(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _showPassword,
+                      onChanged: (value) {
+                        setState(() {
+                          _showPassword = value ?? false;
+                        });
+                      },
+                      activeColor: const Color.fromARGB(255, 10, 79, 54),
+                    ),
+                    const Text("Show Password"),
+                  ],
+                ),
+                Flexible( // <-- this prevents overflow
+                  child: TextButton(
                     onPressed: () {},
                     child: const Text(
                       "Forgot Password?",
                       style: TextStyle(color: Colors.blue),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
               const SizedBox(height: 20),
 
