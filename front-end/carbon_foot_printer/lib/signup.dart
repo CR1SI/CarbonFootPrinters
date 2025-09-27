@@ -1,8 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart';
 import 'login.dart';
+import 'firebase_service.dart';
+
+final AuthService _authService = AuthService();
 
 //user class
 class User {
@@ -23,9 +25,9 @@ class User {
     required this.pfp,
     required this.country,
     required this.transportation,
-    this.carbonEmission,
+    this.carbonEmission = 0.0,
     this.uuid,
-    this.notiflag,
+    this.notiflag = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -67,26 +69,7 @@ class User {
 //
 //right here
 
-Future<bool> sendToBackend(User user) async {
-  const backendUrl = "http://127.0.0.1:5000/signup"; //endpoint
-  try {
-    final response = await http.post(
-      Uri.parse(backendUrl),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(user.toJson()),
-    );
-
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      debugPrint('Backend error: ${response.statusCode} ${response.body}');
-      return false;
-    }
-  } catch (e) {
-    debugPrint('HTTP error: $e');
-    return false;
-  }
-}
+// Old HTTP backend call removed - we now use Firebase Auth + Firestore via AuthService
 
 //first sign in
 class SignupScreen extends StatefulWidget {
@@ -545,7 +528,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       borderSide: const BorderSide(color: Colors.green),
                     ),
                   ),
-                  value: _selectedCountry,
+                  initialValue: _selectedCountry,
                   onChanged: (value) {
                     setState(() {
                       _selectedCountry = value;
@@ -576,7 +559,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       borderSide: const BorderSide(color: Colors.green),
                     ),
                   ),
-                  value: _transportation,
+                  initialValue: _transportation,
                   onChanged: (value) {
                     setState(() {
                       _transportation = value;
@@ -604,25 +587,34 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       transportation: _transportation ?? "",
                       carbonEmission: 0.0, // placeholder float value
                       uuid: null, // placeholder can be any type
-                      notiflag: true,
+                      notiflag: false,
                     );
+                    // Create the Firebase Auth user
+                    final authUser = await _authService.signUp(widget.email, widget.password);
 
-                    bool success = await sendToBackend(user);
+                    if (authUser != null) {
+                      // Save extra profile info to Firestore
+                      final firestore = FirebaseFirestore.instance;
+                      await firestore.collection('users').doc(authUser.uid).set({
+                        'name': user.name,
+                        'pfp': user.pfp,
+                        'country': user.country,
+                        'transportation': user.transportation,
+                        'createdAt': FieldValue.serverTimestamp(),
+                        'carbonEmission': user.carbonEmission ?? 0.0,
+                        'notiflag': user.notiflag ?? true,
+                      }, SetOptions(merge: true));
 
-                    if (success) {
                       if (context.mounted) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) =>  MainHomeScreen()),
+                          MaterialPageRoute(builder: (context) => MainHomeScreen()),
                         );
                       }
                     } else {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Signup failed"),
-                          ),
+                          const SnackBar(content: Text('Signup failed')),
                         );
                       }
                     }

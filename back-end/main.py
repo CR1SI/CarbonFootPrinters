@@ -1,31 +1,13 @@
 import os
-
 from dotenv import load_dotenv
-#loading environment variables
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+from uuid import uuid4
+
 load_dotenv()
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+from database import user_crud
 
-import firebase_admin
-from firebase_admin import credentials, firestore
-#firebase initialize
-CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH")
-
-if CREDENTIALS_PATH and not firebase_admin._apps:
-    try:
-        cred = credentials.Certificate(CREDENTIALS_PATH)
-        firebase_admin.initialize_app(cred)
-        #reusable client object for Firestore
-        db = firestore.client()
-        print('Firebase Admin SDK initialized successfully.')
-    except Exception as e:
-        print(f"Could not initialize firebase. Error: {e}")
-        exit(1)
-else:
-    print("firebase already initialized or credentials missing from .env")
-
-from fastapi import FastAPI
-#fastAPI setup
 app = FastAPI(
     title="CarbonFootPrinters Backend",
     version="1.0.0"
@@ -36,14 +18,105 @@ def read_root():
     """Simple health check endpoint."""
     return {"message": "Welcome to the CarbonFootPrinters API!", "status": "online"}
 
+#pydantic model
+class User(BaseModel):
+    name:str
+    email:str
+    password:str
+    pfp:int = 0
+    country:str
+    transportation:str
+    carbonEmission:float = 0.0
+    user_id: str = Field(default_factory = lambda: uuid4().hex)
+    notiFlag:bool = False
+
+#endpoints
+@app.post("/users/")
+async def create_user(user: User):
+    try:
+        success = user_crud.create_user(user.user_id, user.dict())
+        if success:
+            return {"message": "User created successfully", "user": user.dict()}
+        raise HTTPException(status_code=500, detail="Failed to create user")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
 @app.get("/users/{user_id}")
 async def get_user_info(user_id: str):
     try:
-        doc_ref = db.collection("users").document(user_id)
-        doc = doc_ref.get()
-        if doc.exists:
-            return {"user_id": user_id, "data": doc.to_dict()}
-        else:
-            return {"user_id": user_id, "data": "User not found"}
+        user = user_crud.get_user(user_id)
+        if user:
+            return user
+        raise HTTPException(status_code=404, detail="User not found")
     except Exception as e:
-        return {"error": f"An error occured: {e}"}
+        return {"error": f"An error occurred: {e}"}
+
+@app.put("/users/{user_id}")
+async def update_user_info(user_id: str, update_data: dict):
+    """
+    Update user fields. Example body:
+    {
+      "name": "New Name",
+      "country": "New Country"
+    }
+    """
+    try:
+        success = user_crud.update_user(user_id, update_data)
+        if success:
+            return {"message": "User updated successfully"}
+        raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+@app.delete("/users/{user_id}")
+async def delete_user_info(user_id: str):
+    try:
+        success = user_crud.delete_user(user_id)
+        if success:
+            return {"message": "User deleted successfully"}
+        raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+
+#local test
+# testUser = User(
+#     name="Kyle",
+#     email="kyle@gmail.com",
+#     password="12344",
+#     pfp=2,
+#     country="Brazil",
+#     transportation="Eletric",
+# )
+
+
+# # Create user
+# print("---- Creating user ----")
+# created = user_crud.create_user(testUser.user_id, testUser.dict())
+# print("Created:", created)
+
+# # Get user
+# print("---- Getting user ----")
+# fetched = user_crud.get_user(testUser.user_id)
+# print("Fetched:", fetched)
+
+# # Update user
+# print("---- Updating user ----")
+# update_data = {"country": "Argentina", "notiFlag": True}
+# updated = user_crud.update_user(testUser.user_id, update_data)
+# print("Updated:", updated)
+
+# # Get updated user
+# print("---- Getting updated user ----")
+# fetched_updated = user_crud.get_user(testUser.user_id)
+# print("Fetched after update:", fetched_updated)
+
+# # Delete user
+# print("---- deleting ----")
+# delete = user_crud.delete_user(testUser.user_id)
+# print("Deleted:", delete)
+
+# # Try fetching again
+# print("---- Getting user after delete ----")
+# fetched_after_delete = user_crud.get_user(testUser.user_id)
+# print("Fetched after delete:", fetched_after_delete)

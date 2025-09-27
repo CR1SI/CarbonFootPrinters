@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'profile_screen.dart';
+import 'firebase_service.dart';
+import 'login.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _authService = AuthService(); // Firebase service
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 10, 79, 54),
       body: SafeArea(
@@ -20,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header with Back + Title + Close
+                // Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -73,7 +77,8 @@ class SettingsScreen extends StatelessWidget {
                   title: "Notifications",
                   onTap: () {},
                 ),
-                // Dark mode
+
+                // Dark mode toggle
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: Card(
@@ -93,11 +98,30 @@ class SettingsScreen extends StatelessWidget {
 
                 // Log Out Button
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _authService.signOut(); // Firebase logout
+
+                    if (context.mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                        (route) => false, // removes all previous routes
+                      );
+                    }
+                  },
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 10, 79, 54), width: 2),
                   ),
-                  child: const Text("LOG OUT"),
+                  child: const Text(
+                    "LOG OUT",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color.fromARGB(255, 10, 79, 54),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -108,7 +132,9 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _settingsCard(BuildContext context,
-      {required IconData icon, required String title, required VoidCallback onTap}) {
+      {required IconData icon,
+      required String title,
+      required VoidCallback onTap}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
