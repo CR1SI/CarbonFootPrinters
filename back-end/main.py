@@ -1,35 +1,17 @@
 import os
-
 from dotenv import load_dotenv
-#loading environment variables
+from fastapi import FastAPI, APIRouter
+
 load_dotenv()
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+from database import db
 
-import firebase_admin
-from firebase_admin import credentials, firestore
-#firebase initialize
-CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH")
-
-if CREDENTIALS_PATH and not firebase_admin._apps:
-    try:
-        cred = credentials.Certificate(CREDENTIALS_PATH)
-        firebase_admin.initialize_app(cred)
-        #reusable client object for Firestore
-        db = firestore.client()
-        print('Firebase Admin SDK initialized successfully.')
-    except Exception as e:
-        print(f"Could not initialize firebase. Error: {e}")
-        exit(1)
-else:
-    print("firebase already initialized or credentials missing from .env")
-
-from fastapi import FastAPI
-#fastAPI setup
 app = FastAPI(
     title="CarbonFootPrinters Backend",
     version="1.0.0"
 )
+
+router_v1 = APIRouter(prefix="/v1")
 
 @app.get("/")
 def read_root():
@@ -38,6 +20,9 @@ def read_root():
 
 @app.get("/users/{user_id}")
 async def get_user_info(user_id: str):
+    if not db:
+        return {"error": "Database connection is not available."}
+    
     try:
         doc_ref = db.collection("users").document(user_id)
         doc = doc_ref.get()

@@ -9,7 +9,6 @@ click==8.3.0
 cryptography==46.0.1
 fastapi==0.117.1
 firebase_admin==7.1.0
-google-adk==0.0.1
 google-ai-generativelanguage==0.6.15
 google-api-core==2.25.1
 google-api-python-client==2.183.0
@@ -58,3 +57,4 @@ typing_extensions==4.15.0
 uritemplate==4.2.0
 urllib3==2.5.0
 uvicorn==0.37.0
+google-adk[database]==0.3.0
