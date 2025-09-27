@@ -85,7 +85,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           color: Colors.white,
         ),
         ),
-        centerTitle: true,
+
         backgroundColor: Color.fromARGB(255, 10, 79, 54),
       ),
       body: ListView.builder(
