@@ -10,7 +10,7 @@ class ProfileScreen extends StatelessWidget {
       body: Center(
         child: Container(
           width: 1000,
-          height: 700,
+          height: 400,
           decoration: BoxDecoration(
             color: Colors.white,   
         ),
