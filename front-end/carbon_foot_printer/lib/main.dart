@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'leader_screen.dart';
 import 'news_screen.dart';
-import 'profile_screen.dart';
+import 'publicprofile_screen.dart';
+import 'settings_screen.dart';
 import 'login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -41,7 +42,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     HomeScreen(),
     LeaderboardScreen(),
     NewsScreen(),
-    ProfileScreen(),
+  PublicProfileScreen(
+    username: "GuestUser",
+    pfpIndex: 0,
+  ),
   ];
 
   void _onItemTapped(int index) {
