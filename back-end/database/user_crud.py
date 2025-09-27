@@ -21,7 +21,7 @@ def get_user(user_id: str) -> dict or None:
         doc = doc_ref.get()
 
         if doc.exists:
-            return {"id": doc.id, **doc.to_dict()}
+            return {**doc.to_dict()}
         else:
             return None
     except Exception as e:
