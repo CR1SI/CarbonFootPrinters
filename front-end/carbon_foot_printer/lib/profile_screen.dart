@@ -7,7 +7,10 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 10, 79, 54),
-      body: Center(
+        body: Stack(
+          children: [
+          Align (
+            alignment: Alignment.bottomCenter, 
         child: Container(
           width: 1000,
           height: 400,
@@ -15,7 +18,10 @@ class ProfileScreen extends StatelessWidget {
             color: Colors.white,   
         ),
         ),
+          
       ),
+          ],
+        )
     );
   }
 }
