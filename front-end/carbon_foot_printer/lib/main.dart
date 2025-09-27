@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+
+import 'firebase_options.dart';
 import 'home_screen.dart';
-import 'leader_screen.dart';
+import 'leader_screen.dart' as lb;
 import 'news_screen.dart';
 import 'publicprofile_screen.dart';
 import 'settings_screen.dart';
 import 'login.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +25,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: const AuthWrapper(),
+    );
+  }
+}
+
+/// Stream-based login state wrapper
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<fb_auth.User?>(
+      stream: fb_auth.FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        // User is logged in
+        if (snapshot.hasData) {
+          return const MainHomeScreen();
+        }
+
+        // User is not logged in
+        return const LoginScreen();
+      },
     );
   }
 }
@@ -40,12 +69,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   final List<Widget> widgetOptions = const [
     HomeScreen(),
-    LeaderboardScreen(),
+    lb.LeaderboardScreen(),
     NewsScreen(),
-  PublicProfileScreen(
-    username: "GuestUser",
-    pfpIndex: 0,
-  ),
+    PublicProfileScreen(
+      username: "GuestUser",
+      pfpIndex: 0,
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -60,12 +89,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isSelected ? const Color.fromARGB(255, 6, 134, 87) : Colors.transparent, // white bg if selected
+        color: isSelected
+            ? const Color.fromARGB(255, 6, 134, 87)
+            : Colors.transparent,
       ),
-      padding: const EdgeInsets.all(6), // spacing so icon doesn’t touch edges
+      padding: const EdgeInsets.all(6),
       child: Icon(
         iconData,
-        color: const Color.fromARGB(255, 255, 255, 255)
+        color: Colors.white,
       ),
     );
   }
@@ -79,7 +110,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.white, // still needed for label color
+        selectedItemColor: Colors.white,
         unselectedItemColor: const Color.fromARGB(255, 207, 207, 207),
         items: [
           BottomNavigationBarItem(
