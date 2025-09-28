@@ -1,39 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'settings_screen.dart';
 
 class PublicProfileScreen extends StatelessWidget {
-  final String username;
-  final int pfpIndex;
+  final String userId; // Use this to fetch any user
 
-  const PublicProfileScreen({
-    super.key,
-    required this.username,
-    required this.pfpIndex,
-  });
+  const PublicProfileScreen({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
-    final fb_auth.User? currentUser = fb_auth.FirebaseAuth.instance.currentUser;
-
-    // Optionally: if you want to override with Firestore data
     return StreamBuilder<DocumentSnapshot>(
-      stream: currentUser != null
-          ? FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUser.uid)
-              .snapshots()
-          : null,
+      stream: FirebaseFirestore.instance.collection('users').doc(userId).snapshots(),
       builder: (context, snapshot) {
-        String displayName = username;
-        int displayPfp = pfpIndex;
-
-        if (snapshot.hasData && snapshot.data!.exists) {
-          final userData = snapshot.data!.data() as Map<String, dynamic>;
-          displayName = userData['name'] ?? username;
-          displayPfp = userData['pfp'] ?? pfpIndex;
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
+
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          return const Scaffold(
+            body: Center(child: Text("User not found")),
+          );
+        }
+
+        final userData = snapshot.data!.data() as Map<String, dynamic>;
+        final displayName = userData['displayName'] ?? 'User';
+        final pfpIndex = userData['pfpIndex'] ?? 0;
 
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 10, 79, 54),
@@ -54,9 +47,7 @@ class PublicProfileScreen extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.share),
-                        onPressed: () {
-                          // TODO: implement share
-                        },
+                        onPressed: () {},
                       ),
                       IconButton(
                         icon: const Icon(Icons.settings),
@@ -75,10 +66,8 @@ class PublicProfileScreen extends StatelessWidget {
                   // Avatar
                   CircleAvatar(
                     radius: 50,
-                    backgroundColor:
-                        Colors.primaries[displayPfp % Colors.primaries.length],
-                    child: const Icon(Icons.person,
-                        size: 50, color: Colors.white),
+                    backgroundColor: Colors.primaries[pfpIndex % Colors.primaries.length],
+                    child: const Icon(Icons.person, size: 50, color: Colors.white),
                   ),
 
                   const SizedBox(height: 12),
