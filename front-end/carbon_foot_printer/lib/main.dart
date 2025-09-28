@@ -7,8 +7,8 @@ import 'home_screen.dart';
 import 'leader_screen.dart' as lb;
 import 'news_screen.dart';
 import 'publicprofile_screen.dart';
-import 'settings_screen.dart';
 import 'login.dart';
+import 'location_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Stream-based login state wrapper
+/// Stream-based wrapper to show login or main screen
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 
@@ -47,6 +47,11 @@ class AuthWrapper extends StatelessWidget {
 
         // User is logged in
         if (snapshot.hasData) {
+          final fb_auth.User user = snapshot.data!;
+          
+          // Start background location tracking
+          startTracking(user.uid);
+
           return const MainHomeScreen();
         }
 
@@ -67,13 +72,20 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> widgetOptions = const [
-    HomeScreen(),
-    lb.LeaderboardScreen(),
-    NewsScreen(),
-    PublicProfileScreen(),
+  late final List<Widget> widgetOptions;
 
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize bottom nav screens
+    widgetOptions = [
+      const HomeScreen(),
+      const lb.LeaderboardScreen(),
+      const NewsScreen(),
+      const PublicProfileScreen(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {

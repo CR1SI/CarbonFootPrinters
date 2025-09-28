@@ -41,6 +41,9 @@ dependencies:
   # Foreground Service
   flutter_foreground_task: ^9.1.0
 
+  # Location plugin for GPS data
+  location: ^7.0.0
+
 
 
   # The following adds the Cupertino Icons font to your application.
