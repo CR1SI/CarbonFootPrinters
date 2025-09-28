@@ -4,40 +4,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'settings_screen.dart';
 
 class PublicProfileScreen extends StatelessWidget {
-  const PublicProfileScreen({super.key});
+  final String username;
+  final int pfpIndex;
+
+  const PublicProfileScreen({
+    super.key,
+    required this.username,
+    required this.pfpIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
     final fb_auth.User? currentUser = fb_auth.FirebaseAuth.instance.currentUser;
 
-    if (currentUser == null) {
-      return const Scaffold(
-        body: Center(child: Text('No user logged in')),
-      );
-    }
-
-    // StreamBuilder fetches Firestore data in real-time
+    // Optionally: if you want to override with Firestore data
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUser.uid)
-          .snapshots(),
+      stream: currentUser != null
+          ? FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser.uid)
+              .snapshots()
+          : null,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+        String displayName = username;
+        int displayPfp = pfpIndex;
 
-        if (!snapshot.hasData || !snapshot.data!.exists) {
-          return const Scaffold(
-            body: Center(child: Text('User data not found')),
-          );
+        if (snapshot.hasData && snapshot.data!.exists) {
+          final userData = snapshot.data!.data() as Map<String, dynamic>;
+          displayName = userData['name'] ?? username;
+          displayPfp = userData['pfp'] ?? pfpIndex;
         }
-
-        final userData = snapshot.data!.data() as Map<String, dynamic>;
-        final username = userData['name'] ?? 'Unknown';
-        final pfpIndex = userData['pfp'] ?? 0;
 
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 10, 79, 54),
@@ -52,12 +48,15 @@ class PublicProfileScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // Top row: share + settings
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.share),
-                        onPressed: () {},
+                        onPressed: () {
+                          // TODO: implement share
+                        },
                       ),
                       IconButton(
                         icon: const Icon(Icons.settings),
@@ -72,24 +71,32 @@ class PublicProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+
+                  // Avatar
                   CircleAvatar(
                     radius: 50,
                     backgroundColor:
-                        Colors.primaries[pfpIndex % Colors.primaries.length],
+                        Colors.primaries[displayPfp % Colors.primaries.length],
                     child: const Icon(Icons.person,
                         size: 50, color: Colors.white),
                   ),
+
                   const SizedBox(height: 12),
+
+                  // Username
                   Text(
-                    username.toUpperCase(),
+                    displayName.toUpperCase(),
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 10, 79, 54),
                     ),
                   ),
-                  Text("@${username.toLowerCase()}"),
+                  Text("@${displayName.toLowerCase()}"),
+
                   const SizedBox(height: 20),
+
+                  // Placeholder graph
                   Container(
                     height: 120,
                     width: double.infinity,

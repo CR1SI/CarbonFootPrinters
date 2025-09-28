@@ -47,7 +47,7 @@ class AuthWrapper extends StatelessWidget {
 
         // User is logged in
         if (snapshot.hasData) {
-          return const MainHomeScreen();
+          return MainHomeScreen();
         }
 
         // User is not logged in
@@ -58,8 +58,6 @@ class AuthWrapper extends StatelessWidget {
 }
 
 class MainHomeScreen extends StatefulWidget {
-  const MainHomeScreen({super.key});
-
   @override
   _MainHomeScreenState createState() => _MainHomeScreenState();
 }
@@ -67,12 +65,14 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> widgetOptions = const [
-    HomeScreen(),
-    lb.LeaderboardScreen(),
+ final List<Widget> widgetOptions = [
+    const HomeScreen(),
+    const lb.LeaderboardScreen(),
     NewsScreen(),
-    PublicProfileScreen(),
-
+    PublicProfileScreen(
+      username: "GuestUser",
+      pfpIndex: 0,
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -103,33 +103,39 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 10, 79, 54),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: const Color.fromARGB(255, 207, 207, 207),
-        items: [
-          BottomNavigationBarItem(
-            icon: _buildIcon(Icons.home, 0),
-            label: 'Home',
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12), // spacing from screen edges
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(25), // rounded nav bar
+          child: BottomNavigationBar(
+            backgroundColor: const Color.fromARGB(255, 10, 79, 54),
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: const Color.fromARGB(255, 207, 207, 207),
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            items: [
+              BottomNavigationBarItem(
+                icon: _buildIcon(Icons.home, 0),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(Icons.leaderboard, 1),
+                label: 'Leaderboard',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(Icons.newspaper, 2),
+                label: 'News',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(Icons.person, 3),
+                label: 'Profile',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(Icons.leaderboard, 1),
-            label: 'Leaderboard',
-          ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(Icons.newspaper, 2),
-            label: 'News',
-          ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(Icons.person, 3),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }
