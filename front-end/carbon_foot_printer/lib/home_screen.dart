@@ -106,107 +106,90 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
 
             const Text(
               "Your Weekly Goal",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF0A4F36),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 30),
 
-            // Goal card
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  // Progress circle (placeholder, replace with real data)
-                  SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        CircularProgressIndicator(
-                          value: 20 / 50, // progress (dummy data)
-                          strokeWidth: 8,
-                          backgroundColor: Colors.grey[300],
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                            Color(0xFF0A4F36),
+            // Big Dashboard Circle
+            Expanded(
+              child: Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      height: 220,
+                      width: 220,
+                      child: CircularProgressIndicator(
+                        value: 20 / 50, // dummy progress
+                        strokeWidth: 18,
+                        backgroundColor: Colors.grey[300],
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color(0xFF0A4F36),
+                        ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Text(
+                          "40%",
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0A4F36),
                           ),
                         ),
-                        const Center(
-                          child: Text(
-                            "40%",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        SizedBox(height: 8),
+                        Text(
+                          "20.0 / 50 kg",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF0A4F36),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(width: 20),
-
-                  // Goal info
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "20.0 / 50 kg",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF0A4F36),
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      DropdownButton<int>(
-                        value: 50,
-                        items: const [
-                          DropdownMenuItem(
-                            value: 25,
-                            child: Text("25 kg"),
-                          ),
-                          DropdownMenuItem(
-                            value: 50,
-                            child: Text("50 kg"),
-                          ),
-                          DropdownMenuItem(
-                            value: 100,
-                            child: Text("100 kg"),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          // TODO: connect to backend to update goal
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+
+            // Goal Selector Dropdown
+            DropdownButton<int>(
+              value: 50,
+              items: const [
+                DropdownMenuItem(
+                  value: 25,
+                  child: Text("25 kg"),
+                ),
+                DropdownMenuItem(
+                  value: 50,
+                  child: Text("50 kg"),
+                ),
+                DropdownMenuItem(
+                  value: 100,
+                  child: Text("100 kg"),
+                ),
+              ],
+              onChanged: (value) {
+                // TODO: connect to backend
+              },
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
