@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(160),
+        preferredSize: const Size.fromHeight(180),
         child: Column(
           children: [
             // Top header
@@ -73,12 +73,18 @@ class HomeScreen extends StatelessWidget {
               future: totalEmissionsSaved,
               builder: (context, snapshot) {
                 return Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF068657),
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(20),
-                    ),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 8), // narrower than header
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF068657),
+                    borderRadius: BorderRadius.circular(20), // all corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                   padding:
                       const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
