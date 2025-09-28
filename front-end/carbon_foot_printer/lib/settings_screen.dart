@@ -24,14 +24,10 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header
+                // Header with Title (left) + Close (right) — no back arrow
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.pop(context),
-                    ),
                     const Text(
                       "Settings",
                       style: TextStyle(
