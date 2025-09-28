@@ -8,7 +8,7 @@ back-end/carbonfootfrinters-firebase-adminsdk-fbsvc-4d4d0505b7.json
 
 #backend env
 back-end/.env
-back-end/venv
+back-end/.venv
 
 # Firebase Hosting
 /firebase.json

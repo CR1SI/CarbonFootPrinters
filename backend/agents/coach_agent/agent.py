@@ -1,5 +1,6 @@
 from google.adk.agents import Agent
-from database import user_crud
+from ...database import user_crud
+
 
 root_agent = Agent(
     name="coach_agent",
@@ -12,6 +13,11 @@ root_agent = Agent(
     - user_crud functions: get_user, create_user, update_user, delete_user
     based on the timeline you will return a helpful tip or coach like response return a string with under 50 characters.
     """,
-    tools=[user_crud],
+    tools=[
+        user_crud.get_user,
+        user_crud.create_user,
+        user_crud.update_user,
+        user_crud.delete_user,
+    ],
 
 )
