@@ -57,12 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Color(0xFF0A4F36)),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SettingsScreen(),
-                          ),
-                        );
+                        Navigator.pop(context);
                       },
                     ),
                   ],
