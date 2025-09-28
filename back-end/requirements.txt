@@ -58,3 +58,4 @@ uritemplate==4.2.0
 urllib3==2.5.0
 uvicorn==0.37.0
 google-adk[database]==0.3.0
+litellm==1.66.3

@@ -8,6 +8,8 @@ load_dotenv()
 
 from database import user_crud
 
+from services.emission_service import EmissionService
+
 app = FastAPI(
     title="CarbonFootPrinters Backend",
     version="1.0.0"
@@ -77,6 +79,53 @@ async def delete_user_info(user_id: str):
         raise HTTPException(status_code=404, detail="User not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+@app.post("/users/{user_id}/emissions/add")
+async def add_user_emissions(user_id: str, emission: float):
+    try:
+        # Fetch current user
+        user = user_crud.get_user(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        current_emission = user.get("carbonEmission", 0.0)
+        new_emission = current_emission + emission
+
+        success = user_crud.update_user(user_id, {"carbonEmission": new_emission})
+        if success:
+            return {"message": f"Added {emission} kg CO₂. Total is now {new_emission} kg."}
+        raise HTTPException(status_code=500, detail="Failed to update emissions")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+
+@app.post("/users/{user_id}/calculate_emission")
+async def calculate_user_emission(user_id: str, input_data: dict):
+    """
+    Calculate CO2 emissions for a user and update their Firebase record.
+    input_data should contain whatever the agent expects (e.g. activity_id, amount).
+    """
+    try:
+        updated_user = EmissionService.calculate_and_store_emission(user_id, input_data)
+        return {
+            "message": "Carbon emission calculated and stored successfully",
+            "user": updated_user
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {e}")
+    
+@app.post("/admin/recalculate_all_emissions")
+async def recalculate_all_emissions():
+    try:
+        updated_users = EmissionService.recalculate_all_users()
+        return {
+            "message": f"Recalculated emissions for {len(updated_users)} users.",
+            "users": updated_users
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Batch error: {e}")
+
+
 
 
 #local test

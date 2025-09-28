@@ -33,3 +33,4 @@ yarn-error.log*
 
 # Environment files (local configs)
 /.env.*
+/back-end/.venv
