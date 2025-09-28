@@ -47,7 +47,13 @@ class AuthWrapper extends StatelessWidget {
 
         // User is logged in
         if (snapshot.hasData) {
-          return MainHomeScreen();
+          final fb_auth.User user = snapshot.data!;
+
+          // Start background location tracking
+          startTracking(user.uid);
+
+          // Pass UID to MainHomeScreen
+          return MainHomeScreen(userId: user.uid);
         }
 
         // User is not logged in
@@ -58,22 +64,30 @@ class AuthWrapper extends StatelessWidget {
 }
 
 class MainHomeScreen extends StatefulWidget {
+  final String userId; // Pass the UID here
+
+  const MainHomeScreen({super.key, required this.userId});
+
   @override
   _MainHomeScreenState createState() => _MainHomeScreenState();
 }
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
   int _selectedIndex = 0;
+  late final List<Widget> widgetOptions;
 
- final List<Widget> widgetOptions = [
-    const HomeScreen(),
-    const lb.LeaderboardScreen(),
-    NewsScreen(),
-    PublicProfileScreen(
-      username: "GuestUser",
-      pfpIndex: 0,
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize bottom nav screens with UID passed to profile
+    widgetOptions = [
+      const HomeScreen(),
+      const lb.LeaderboardScreen(),
+      const NewsScreen(),
+      PublicProfileScreen(userId: widget.userId), // ✅ Correctly pass UID
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -104,9 +118,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return Scaffold(
       body: widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(12), // spacing from screen edges
+        padding: const EdgeInsets.all(12),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(25), // rounded nav bar
+          borderRadius: BorderRadius.circular(25),
           child: BottomNavigationBar(
             backgroundColor: const Color.fromARGB(255, 10, 79, 54),
             showSelectedLabels: true,

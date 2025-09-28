@@ -598,7 +598,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => MainHomeScreen()),
+                              MaterialPageRoute(builder: (context) => MainHomeScreen(userId: authUser.uid)),
                           );
                         }
                       } else {
