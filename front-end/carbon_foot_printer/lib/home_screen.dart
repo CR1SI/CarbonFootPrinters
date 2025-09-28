@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(180),
+        preferredSize: const Size.fromHeight(200),
         child: Column(
           children: [
             // Top header
