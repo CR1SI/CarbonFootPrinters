@@ -25,8 +25,8 @@ class PublicProfileScreen extends StatelessWidget {
         }
 
         final userData = snapshot.data!.data() as Map<String, dynamic>;
-        final displayName = userData['displayName'] ?? 'User';
-        final pfpIndex = userData['pfpIndex'] ?? 0;
+        final displayName = userData['name'] ?? 'User';
+        final pfpIndex = userData['pfp'] ?? 0;
 
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 10, 79, 54),
