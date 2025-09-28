@@ -50,15 +50,12 @@ class SettingsScreen extends StatelessWidget {
                   icon: Icons.person,
                   title: "Profile",
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfileScreen(
-                          username: "GuestUser",
-                          pfpIndex: 0,
-                        ),
-                      ),
-                    );
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const ProfileScreen(),
+  ),
+);
                   },
                 ),
                 _settingsCard(
