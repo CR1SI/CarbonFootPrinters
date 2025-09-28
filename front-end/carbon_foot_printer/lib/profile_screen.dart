@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header with Title + Back Arrow (top right)
+                // Header with Title (left) + Back Arrow (top right, facing left)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.arrow_forward, color: Color(0xFF0A4F36)),
+                      icon: const Icon(Icons.arrow_back, color: Color(0xFF0A4F36)),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
