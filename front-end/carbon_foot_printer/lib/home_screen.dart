@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedGoal = 50; // default goal
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +22,6 @@ class HomeScreen extends StatelessWidget {
     }
 
     final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-
     final Future<double> totalEmissionsSaved = Future.value(94820); // in tons
 
     return Scaffold(
@@ -130,32 +136,39 @@ class HomeScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     SizedBox(
-                      height: 220,
-                      width: 220,
-                      child: CircularProgressIndicator(
-                        value: 20 / 50, // dummy progress
-                        strokeWidth: 18,
-                        backgroundColor: Colors.grey[300],
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          Color(0xFF0A4F36),
-                        ),
+                      height: 240,
+                      width: 240,
+                      child: TweenAnimationBuilder<double>(
+                        tween: Tween<double>(begin: 0, end: 20 / _selectedGoal),
+                        duration: const Duration(seconds: 1),
+                        builder: (context, value, child) {
+                          return CircularProgressIndicator(
+                            value: value,
+                            strokeWidth: 22, // thicker
+                            backgroundColor: Colors.grey[300],
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Color(0xFF0A4F36),
+                            ),
+                            strokeCap: StrokeCap.round, // beveled/rounded ends
+                          );
+                        },
                       ),
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Text(
-                          "40%",
-                          style: TextStyle(
+                          "${((20 / _selectedGoal) * 100).toStringAsFixed(0)}%",
+                          style: const TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF0A4F36),
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          "20.0 / 50 kg",
-                          style: TextStyle(
+                          "20.0 / $_selectedGoal kg",
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: Color(0xFF0A4F36),
@@ -170,7 +183,7 @@ class HomeScreen extends StatelessWidget {
 
             // Goal Selector Dropdown
             DropdownButton<int>(
-              value: 50,
+              value: _selectedGoal,
               items: const [
                 DropdownMenuItem(
                   value: 25,
@@ -186,7 +199,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
               onChanged: (value) {
-                // TODO: connect to backend
+                setState(() {
+                  _selectedGoal = value!;
+                });
               },
             ),
             const SizedBox(height: 20),
