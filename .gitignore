@@ -4,11 +4,11 @@
 .firebaserc
 
 #secret key
-backend/carbonfootfrinters-firebase-adminsdk-fbsvc-4d4d0505b7.json
+./backend/carbonfootfrinters-firebase-adminsdk-fbsvc-4d4d0505b7.json
 
 #backend env
-backend/.env
-backend/.venv
+./backend/.env
+./backend/.venv
 
 # Firebase Hosting
 /firebase.json
@@ -33,4 +33,4 @@ yarn-error.log*
 
 # Environment files (local configs)
 /.env.*
-/back-end/.venv
+backend/.env.*
