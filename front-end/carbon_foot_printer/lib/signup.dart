@@ -45,32 +45,6 @@ class User {
   }
 }
 
-//send to the backend using URL here
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//right here
-
-// Old HTTP backend call removed - we now use Firebase Auth + Firestore via AuthService
-
 //first sign in
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -89,144 +63,153 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 10, 79, 54),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(33),
-          width: 350,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(33),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0A4F36), Color(0xFF068657)], // top -> bottom
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "CREATE\nACCOUNT",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 10, 79, 54),
-                ),
-              ),
-              const SizedBox(height: 25),
-
-              TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  labelText: "Username:",
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.green),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: "Email:",
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.green),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Password:",
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.green),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              TextField(
-                controller: _confirmPasswordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Confirm Password:",
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.green),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 25),
-
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(
-                      color: Color.fromARGB(255, 10, 79, 54), width: 2),
-                  minimumSize: const Size.fromHeight(50),
-                ),
-                onPressed: () {
-                  if (_passwordController.text ==
-                      _confirmPasswordController.text) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AdditionalDetailsScreen(
-                          name: _usernameController.text,
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        ),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Passwords do not match!"),
-                      ),
-                    );
-                  }
-                },
-                child: const Text(
-                  "NEXT",
+        ),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(33),
+            width: 350,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(33),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "CREATE\nACCOUNT",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 10, 79, 54),
                   ),
                 ),
-              ),
+                const SizedBox(height: 25),
 
-              const SizedBox(height: 15),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have an account? "),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
-                    },
-                    child: const Text(
-                      "Log in",
-                      style: TextStyle(color: Colors.blue),
+                TextField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: "Username:",
+                    filled: true,
+                    fillColor: Colors.grey[300],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.green),
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 15),
+
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: "Email:",
+                    filled: true,
+                    fillColor: Colors.grey[300],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.green),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Password:",
+                    filled: true,
+                    fillColor: Colors.grey[300],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.green),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+
+                TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Confirm Password:",
+                    filled: true,
+                    fillColor: Colors.grey[300],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.green),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 25),
+
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 10, 79, 54), width: 2),
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: () {
+                    if (_passwordController.text ==
+                        _confirmPasswordController.text) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AdditionalDetailsScreen(
+                            name: _usernameController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Passwords do not match!"),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "NEXT",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color.fromARGB(255, 10, 79, 54),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already have an account? "),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      },
+                      child: const Text(
+                        "Log in",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -464,170 +447,178 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 10, 79, 54),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(33),
-          width: 350,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(33),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0A4F36), Color(0xFF068657)], // top -> bottom
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "ADDITIONAL\nDETAILS",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 10, 79, 54),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_left),
-                      onPressed: () {
-                        setState(() {
-                          _pfpIndex = (_pfpIndex - 1) % 10;
-                        });
-                      },
-                    ),
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor:
-                          Colors.primaries[_pfpIndex % Colors.primaries.length],
-                      child: const Icon(Icons.person, size: 40, color: Colors.white),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.arrow_right),
-                      onPressed: () {
-                        setState(() {
-                          _pfpIndex = (_pfpIndex + 1) % 10;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-
-                DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    labelText: "Country:",
-                    filled: true,
-                    fillColor: Colors.grey[300],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.green),
-                    ),
-                  ),
-                  initialValue: _selectedCountry,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCountry = value;
-                    });
-                  },
-                  items: _countries
-                      .map(
-                        (country) => DropdownMenuItem(
-                          value: country,
-                          child: Text(
-                            country,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-                const SizedBox(height: 15),
-
-                DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    labelText: "Transportation:",
-                    filled: true,
-                    fillColor: Colors.grey[300],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.green),
-                    ),
-                  ),
-                  initialValue: _transportation,
-                  onChanged: (value) {
-                    setState(() {
-                      _transportation = value;
-                    });
-                  },
-                  items: _transportOptions
-                      .map((t) => DropdownMenuItem(value: t, child: Text(t)))
-                      .toList(),
-                ),
-                const SizedBox(height: 25),
-
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 10, 79, 54), width: 2),
-                    minimumSize: const Size.fromHeight(50),
-                  ),
-                  onPressed: () async {
-                    User user = User(
-                      name: widget.name,
-                      email: widget.email,
-                      password: widget.password,
-                      pfp: _pfpIndex,
-                      country: _selectedCountry ?? "",
-                      transportation: _transportation ?? "",
-                      carbonEmission: 0.0, // placeholder float value
-                      uuid: null, // placeholder can be any type
-                      notiflag: false,
-                    );
-                    // Create the Firebase Auth user
-                    final authUser = await _authService.signUp(widget.email, widget.password);
-
-                    if (authUser != null) {
-                      // Save extra profile info to Firestore
-                      final firestore = FirebaseFirestore.instance;
-                      await firestore.collection('users').doc(authUser.uid).set({
-                        'name': user.name,
-                        'pfp': user.pfp,
-                        'country': user.country,
-                        'transportation': user.transportation,
-                        'createdAt': FieldValue.serverTimestamp(),
-                        'carbonEmission': user.carbonEmission ?? 0.0,
-                        'notiflag': user.notiflag ?? true,
-                      }, SetOptions(merge: true));
-
-                      if (context.mounted) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => MainHomeScreen()),
-                        );
-                      }
-                    } else {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Signup failed')),
-                        );
-                      }
-                    }
-                  },
-                  child: const Text(
-                    "SIGN UP",
+        ),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(33),
+            width: 350,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(33),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "ADDITIONAL\nDETAILS",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 10, 79, 54),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_left),
+                        onPressed: () {
+                          setState(() {
+                            _pfpIndex = (_pfpIndex - 1) % 10;
+                          });
+                        },
+                      ),
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundColor:
+                            Colors.primaries[_pfpIndex % Colors.primaries.length],
+                        child: const Icon(Icons.person, size: 40, color: Colors.white),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_right),
+                        onPressed: () {
+                          setState(() {
+                            _pfpIndex = (_pfpIndex + 1) % 10;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  DropdownButtonFormField<String>(
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      labelText: "Country:",
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.green),
+                      ),
+                    ),
+                    initialValue: _selectedCountry,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCountry = value;
+                      });
+                    },
+                    items: _countries
+                        .map(
+                          (country) => DropdownMenuItem(
+                            value: country,
+                            child: Text(
+                              country,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  const SizedBox(height: 15),
+
+                  DropdownButtonFormField<String>(
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      labelText: "Transportation:",
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.green),
+                      ),
+                    ),
+                    initialValue: _transportation,
+                    onChanged: (value) {
+                      setState(() {
+                        _transportation = value;
+                      });
+                    },
+                    items: _transportOptions
+                        .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                        .toList(),
+                  ),
+                  const SizedBox(height: 25),
+
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(
+                          color: Color.fromARGB(255, 10, 79, 54), width: 2),
+                      minimumSize: const Size.fromHeight(50),
+                    ),
+                    onPressed: () async {
+                      User user = User(
+                        name: widget.name,
+                        email: widget.email,
+                        password: widget.password,
+                        pfp: _pfpIndex,
+                        country: _selectedCountry ?? "",
+                        transportation: _transportation ?? "",
+                        carbonEmission: 0.0, // placeholder float value
+                        uuid: null, // placeholder can be any type
+                        notiflag: false,
+                      );
+                      // Create the Firebase Auth user
+                      final authUser = await _authService.signUp(widget.email, widget.password);
+
+                      if (authUser != null) {
+                        // Save extra profile info to Firestore
+                        final firestore = FirebaseFirestore.instance;
+                        await firestore.collection('users').doc(authUser.uid).set({
+                          'name': user.name,
+                          'pfp': user.pfp,
+                          'country': user.country,
+                          'transportation': user.transportation,
+                          'createdAt': FieldValue.serverTimestamp(),
+                          'carbonEmission': user.carbonEmission ?? 0.0,
+                          'notiflag': user.notiflag ?? true,
+                        }, SetOptions(merge: true));
+
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                              MaterialPageRoute(builder: (context) => MainHomeScreen(userId: authUser.uid)),
+                          );
+                        }
+                      } else {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Signup failed')),
+                          );
+                        }
+                      }
+                    },
+                    child: const Text(
+                      "SIGN UP",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromARGB(255, 10, 79, 54),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
