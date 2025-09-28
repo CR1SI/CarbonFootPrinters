@@ -72,31 +72,21 @@ class HomeScreen extends StatelessWidget {
             FutureBuilder<double>(
               future: totalEmissionsSaved,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Container(
-                    width: double.infinity,
-                    color: const Color(0xFF068657),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: const Center(
-                      child: Text(
-                        "Loading emissions data...",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
                 return Container(
                   width: double.infinity,
-                  color: const Color(0xFF068657),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF068657),
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(20),
+                    ),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                   child: Center(
                     child: Text(
-                      "Total Emissions Saved: ${snapshot.data!.toStringAsFixed(0)} tons of CO₂",
+                      snapshot.hasData
+                          ? "Total Emissions Saved: ${snapshot.data!.toStringAsFixed(0)} tons of CO₂"
+                          : "Loading emissions data...",
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
