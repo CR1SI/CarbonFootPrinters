@@ -84,7 +84,6 @@ users (collection)
 ---
 
 ## Screenshots / Mockups
-(Add screenshots from the app if available for hackathon submission.)
 
 ---
 
@@ -114,7 +113,7 @@ flutter run
 ## Contributors
 - JadeFootprint
   - Amar Razzaq – Lead developer, Firebase integration, UI/UX, Graphic Design
-  - Chris Padleski - Lead developer, Firebase integration, Auth Dev, CRUD API, Backend Dev, ADK
+  - Cristian Padleski - Lead developer, Firebase integration, Auth Dev, CRUD API, Backend Dev, ADK
   - David Gomez - Lead developer, UI/UX, Graphic Design, Figma
   - Iadd Chehaeb - ADK Agent Engineer
 
