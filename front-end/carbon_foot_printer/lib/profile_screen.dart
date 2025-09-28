@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String username;
@@ -28,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 10, 79, 54),
+      backgroundColor: const Color(0xFF0A4F36), // Dark green background
       body: SafeArea(
         child: Center(
           child: Container(
@@ -41,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header with Back + Title
+                // Header with Title + Back Arrow (top right)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -50,15 +51,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 10, 79, 54),
+                        color: Color(0xFF0A4F36),
                       ),
                     ),
-                    const SizedBox(width: 48), // placeholder for symmetry
+                    IconButton(
+                      icon: const Icon(Icons.arrow_forward, color: Color(0xFF0A4F36)),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
 
-                // Icon selector
+                // Profile picture selector
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -74,8 +85,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       radius: 50,
                       backgroundColor:
                           Colors.primaries[_pfpIndex % Colors.primaries.length],
-                      child: const Icon(Icons.person,
-                          size: 50, color: Colors.white),
+                      child: const Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.white,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.arrow_right),
@@ -89,6 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 30),
 
+                // Profile Options
                 _profileCard(
                   icon: Icons.person,
                   title: "Change Username",
@@ -107,8 +122,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _profileCard(
-      {required IconData icon, required String title, required VoidCallback onTap}) {
+  Widget _profileCard({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
@@ -116,9 +134,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           borderRadius: BorderRadius.circular(12),
         ),
         child: ListTile(
-          leading: Icon(icon, color: Colors.black87),
-          title: Text(title),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          leading: Icon(icon, color: const Color(0xFF0A4F36)),
+          title: Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFF0A4F36),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF0A4F36)),
           onTap: onTap,
         ),
       ),
