@@ -22,9 +22,6 @@ hosting/.cache
 backend/carbonfootfrinters-firebase-adminsdk-fbsvc-4d4d0505b7.json
 backend/.env
 backend/.venv
-.env.*
-.env
-
 # Logs
 *.log
 npm-debug.log*
@@ -32,8 +29,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Environment files (local configs)
-/.env.*
-backend/.env.*
 # ------------------------
 # Python
 # ------------------------
