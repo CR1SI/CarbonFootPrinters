@@ -6,7 +6,7 @@ import 'firebase_options.dart';
 import 'home_screen.dart';
 import 'leader_screen.dart' as lb;
 import 'news_screen.dart';
-import 'publicprofile_screen.dart';
+import 'publicprofile_screen.dart'; // Make sure this file exports PublicProfileScreen
 import 'login.dart';
 
 void main() async {
@@ -144,6 +144,21 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class PublicProfileScreen extends StatelessWidget {
+  final String userId;
+
+  const PublicProfileScreen({Key? key, required this.userId}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Replace with your actual profile UI
+    return Scaffold(
+      appBar: AppBar(title: const Text('Public Profile')),
+      body: Center(child: Text('User ID: $userId')),
     );
   }
 }
