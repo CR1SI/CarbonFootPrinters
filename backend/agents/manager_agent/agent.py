@@ -13,6 +13,83 @@ import os
 import json
 import requests
 
+import math
+from datetime import datetime
+from geopy.geocoders import Nominatim
+
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371  # Earth radius in km
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    return R * c
+
+def process_movements(movements: list[dict]) -> dict:
+    """
+    movements = [
+      {
+        "latitude": 25.7555917,
+        "longitude": -80.37272,
+        "speed_kmh": 0,
+        "speed_mps": 0,
+        "timestamp": "September 27, 2025 at 10:41:42 PM UTC-4"
+      },
+      ...
+    ]
+    """
+    if not movements:
+        return {}
+
+    # 1️⃣ Get country from first point
+    geolocator = Nominatim(user_agent="carbon_app")
+    location = geolocator.reverse(
+        (movements[0]["latitude"], movements[0]["longitude"]), 
+        language="en"
+    )
+    country = location.raw["address"].get("country", "Unknown")
+
+    # 2️⃣ Compute distance and max speed
+    total_distance = 0.0
+    max_speed = 0.0
+
+    # Helper to parse timestamp
+    def parse_time(ts: str):
+        return datetime.strptime(ts, "%B %d, %Y at %I:%M:%S %p UTC-4")
+
+    for i in range(1, len(movements)):
+        p1, p2 = movements[i-1], movements[i]
+
+        # Distance (Haversine)
+        dist = haversine(p1["latitude"], p1["longitude"], p2["latitude"], p2["longitude"])
+        total_distance += dist
+
+        # Speed (prefer provided speed, fallback to calc)
+        if p2["speed_kmh"] and p2["speed_kmh"] > 0:
+            speed = p2["speed_kmh"]
+        else:
+            t1, t2 = parse_time(p1["timestamp"]), parse_time(p2["timestamp"])
+            dt = (t2 - t1).total_seconds() / 3600.0  # hours
+            speed = dist / dt if dt > 0 else 0
+        max_speed = max(max_speed, speed)
+
+    # 3️⃣ Determine transportation mode
+    if max_speed < 6:
+        transport = "walking"
+    elif max_speed < 25:
+        transport = "bicycle"
+    elif max_speed < 200:
+        transport = "car"
+    else:
+        transport = "airplane"
+
+    return {
+        "transportation": transport,
+        "distance_km": round(total_distance, 2),
+        "country": country
+    }
+
+
 
 
 
@@ -69,6 +146,11 @@ class Transaction(BaseModel):
     amount: float
     merchant_name: Optional[str] = None
     category: Optional[List[str]] = None
+
+class Movement(BaseModel):
+    transportation: str
+    distance_km: float
+    country: str
     
 def verify_transactions():
     """
@@ -79,6 +161,26 @@ def verify_transactions():
     cleaned_data = [Transaction(**txn).dict() for txn in raw_data["transactions"]]
     return cleaned_data
 
+def verify_movement():
+    """
+    Load JSON, validate against the Movement model,
+    and drop any fields that are not in the model.
+    """
+    raw_data = getJSON()
+    cleaned_data = [Movement(**txn).dict() for txn in raw_data["movement"]]
+
+emission_type_agent = Agent(
+    name="determines_emission_type",
+    model="gemini-2.0-flash",
+    description="You are an agent that determines the emission type of a purchase based on its category.",
+    instruction="""
+    Add a {activity_id: str} data value to the JSON and you have to determine it for each transaction based on its category. These are the options you can choose from. Make the value Null if none of them match:
+    [transport_services-type_air_transport-basis_industry, accommodation-type_all_other_traveler_accommodation, consumer_services-type_mobile_food_services, health_care-type_pharmacies_and_drug_stores, general_retail-type_electronics_stores]
+    Do not invent fields. Always include activity_id, 'Null' is not an option. Afterwards, always pass to your co2_agent for adding a new data type of the JSON. The events cannot end here under any circumstance, it must pass to your sub agent.
+    """,
+    sub_agents = [co2_agent]
+
+)
 
 emission_type_agent = Agent(
     name="determines_emission_type",
@@ -103,6 +205,33 @@ verification_bank_agent = Agent(
     Always include category, even if 'Other'. Afterwards, always pass to your emission_type_agent for adding a new data type of the JSON.
     """,
     sub_agents= [emission_type_agent],
+)
+
+movement_identifier_agent = Agent(
+    name = "movement_identifier",
+    model="gemini-2.0-flash",
+    description= "Agent that identifies whether user is running, walking, or driving, the user's location and the user's speed based on the JSON data.",
+    instruction="""
+    Your task is to convert raw movement data into structured trip information. 
+Always call the process_movements tool with the provided list of movement dictionaries.
+
+Rules:
+1. Do not attempt to infer results yourself.
+2. Do not modify the input before sending it to the tool.
+3. Do not change the structure of the tools output.
+4. Always return exactly what process_movements gives you.
+
+The tool will compute:
+- transportation type
+- total distance traveled (km)
+- country name
+
+Example:
+Input: a list of dictionaries with latitude, longitude, speed, and timestamp.
+Output: {"transportation": "car", "distance_km": 12.5, "country": "Brazil"}
+    """,
+    tools = [process_movements],
+    sub_agents = [],
 )
 
 

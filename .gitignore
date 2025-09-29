@@ -1,16 +1,9 @@
+# ------------------------
 # Firebase build and deployment files
+# ------------------------
 /firebase-debug.log
 /firebase-debug.*.log
 .firebaserc
-
-#secret key
-backend/carbonfootfrinters-firebase-adminsdk-fbsvc-4d4d0505b7.json
-
-#backend env
-backend/.env
-backend/.venv
-
-# Firebase Hosting
 /firebase.json
 *.cache
 hosting/.cache
@@ -25,6 +18,13 @@ hosting/.cache
 /.firebase/
 /emulator-ui/
 
+# Secret keys / environment
+backend/carbonfootfrinters-firebase-adminsdk-fbsvc-4d4d0505b7.json
+backend/.env
+backend/.venv
+.env.*
+.env
+
 # Logs
 *.log
 npm-debug.log*
@@ -34,3 +34,51 @@ yarn-error.log*
 # Environment files (local configs)
 /.env.*
 backend/.env.*
+# ------------------------
+# Python
+# ------------------------
+__pycache__/
+*.py[cod]
+*.class
+*.swp
+
+# ------------------------
+# IDEs / Editors
+# ------------------------
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+.atom/
+.build/
+.buildlog/
+.history
+.swiftpm/
+.migrate_working_dir/
+
+# ------------------------
+# macOS
+# ------------------------
+.DS_Store
+
+# ------------------------
+# Flutter/Dart/Pub
+# ------------------------
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+
+# Symbolication / Obfuscation
+app.*.symbols
+app.*.map.json
+
+# Android Studio build artifacts
+/android/app/debug
+/android/app/profile
+/android/app/release

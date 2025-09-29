@@ -1,3 +1,4 @@
+database/user_crud.py
 import firebase_admin
 from firebase_admin import firestore
 from . import db
@@ -90,4 +91,42 @@ def delete_user(user_id: str) -> bool:
         return True
     except Exception as e:
         print(f"Error deleting user {user_id}: {e}")
+        return False
+    
+def get_user_movements(user_id: str):
+    """
+    Fetch all movement points for a user from Firebase.
+    Returns a list of dicts.
+    """
+    try:
+        movements_ref = db.collection("users").document(user_id).collection("movements")
+        docs = movements_ref.stream()
+        movements = [doc.to_dict() for doc in docs]
+        return movements
+    except Exception as e:
+        print(f"Error fetching movements for {user_id}: {e}")
+        return []
+    
+def does_user_drive_gas(user_id: str) -> bool:
+    """
+    Fetch whether a user drives a gas car from Firebase.
+    Returns True or False.
+    """
+    try:
+        car_doc = (
+            db.collection("users")
+              .document(user_id)
+              .collection("transportation")
+              .document("car")
+              .get()
+        )
+
+        if car_doc.exists:
+            car_type = car_doc.to_dict().get("type", "")
+            return car_type == "Gas Car"
+        else:
+            return False
+
+    except Exception as e:
+        print(f"Error fetching car for {user_id}: {e}")
         return False
