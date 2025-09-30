@@ -6,9 +6,8 @@ import 'firebase_options.dart';
 import 'home_screen.dart';
 import 'leader_screen.dart' as lb;
 import 'news_screen.dart';
-import 'publicprofile_screen.dart';
+import 'publicprofile_screen.dart'; // Make sure this file exports PublicProfileScreen
 import 'login.dart';
-import 'location_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +29,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Stream-based wrapper to show login or main screen
+/// Stream-based login state wrapper
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 
@@ -47,13 +46,7 @@ class AuthWrapper extends StatelessWidget {
 
         // User is logged in
         if (snapshot.hasData) {
-          final fb_auth.User user = snapshot.data!;
-
-          // Start background location tracking
-          startTracking(user.uid);
-
-          // Pass UID to MainHomeScreen
-          return MainHomeScreen(userId: user.uid);
+          return MainHomeScreen(userId: snapshot.data!.uid); // ✅ pass UID here
         }
 
         // User is not logged in
@@ -64,7 +57,7 @@ class AuthWrapper extends StatelessWidget {
 }
 
 class MainHomeScreen extends StatefulWidget {
-  final String userId; // Pass the UID here
+  final String userId; // ✅ required now
 
   const MainHomeScreen({super.key, required this.userId});
 
@@ -74,18 +67,18 @@ class MainHomeScreen extends StatefulWidget {
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
   int _selectedIndex = 0;
+
   late final List<Widget> widgetOptions;
 
   @override
   void initState() {
     super.initState();
-
-    // Initialize bottom nav screens with UID passed to profile
+    // ✅ Initialize screens once with the UID from widget.userId
     widgetOptions = [
       const HomeScreen(),
       const lb.LeaderboardScreen(),
       const NewsScreen(),
-      PublicProfileScreen(userId: widget.userId), // ✅ Correctly pass UID
+      PublicProfileScreen(userId: widget.userId), // ✅ now valid
     ];
   }
 
@@ -151,6 +144,21 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class PublicProfileScreen extends StatelessWidget {
+  final String userId;
+
+  const PublicProfileScreen({Key? key, required this.userId}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Replace with your actual profile UI
+    return Scaffold(
+      appBar: AppBar(title: const Text('Public Profile')),
+      body: Center(child: Text('User ID: $userId')),
     );
   }
 }
